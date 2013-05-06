@@ -55,5 +55,10 @@ Probably also want some keybindings:
                 (local-set-key "\C-cpm" 'nosetests-pdb-module)
                 (local-set-key "\C-cp." 'nosetests-pdb-one)))
 
+Thanks
+------
+
+To the original author of nose.el:  `Jason Pellerin` and `Augie Fackler`
+
 
 [fork]: https://bitbucket.org/durin42/nosemacs/overview
