@@ -80,7 +80,7 @@
               (concat "%s "
                       (if nose-use-verbose "-v " "")
                       "%s -w %s -c %ssetup.cfg %s")
-              (nose-find-test-runner) args where where tnames)))
+              nose-global-name args where where tnames)))
   )
 
 (defun nosetests-all (&optional debug failed)
