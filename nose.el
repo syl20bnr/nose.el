@@ -24,8 +24,9 @@
 ;;
 ;; (require 'nose)
 
-;; If your global nose isn't called "nosetests", then you'll want to
-;; redefine nose-global-name to be the command that should be used.
+;; This version is compatible with Windows.
+;; It does not call directly the nosetests script. Instead it calls
+;; python with an inline script to call nose.
 
 ;; By default, the root of a project is found by looking for any of the files
 ;; 'setup.py', '.hg' and '.git'. You can add files to check for to the file
@@ -55,12 +56,14 @@
 
 (defvar nose-project-root-files '("setup.py" ".hg" ".git"))
 (defvar nose-project-root-test 'nose-project-root)
-(defvar nose-global-name "nosetests")
 (defvar nose-use-verbose t)
 
 (defun run-nose (&optional tests debug failed)
-  "run nosetests"
-  (let* ((nose nose-global-name)
+  "run nosetests by calling python instead of nosetests script.
+To be able to debug on Windows platform python output must be not buffered.
+For more details: http://pswinkels.blogspot.ca/2010/04/debugging-python-code-from-within-emacs.html
+"
+  (let* ((nose "python -u -c \"import nose; nose.run()\"")
          (where (nose-find-project-root))
          (args (concat (if debug "--pdb" "")
                        " "
@@ -80,7 +83,7 @@
               (concat "%s "
                       (if nose-use-verbose "-v " "")
                       "%s -w %s -c %ssetup.cfg %s")
-              nose-global-name args where where tnames)))
+              nose args where where tnames)))
   )
 
 (defun nosetests-all (&optional debug failed)

@@ -9,8 +9,9 @@ This is a fork from the the [bitbucket repository][fork].
 What's different ?
 ------------------
 
-This fork drop the support for non-global nose test runner which is
-buggy under Windows. Globally available test runner is OK for my needs.
+This fork:
+- brings Windows compatibility.
+- calls python with an inline script to launch nose.
 
 I also plan to make it work with test suites (available via
 `easy_install nose-fixes`).
