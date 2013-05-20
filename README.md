@@ -27,9 +27,6 @@ and then
 Usage
 -------
 
-If your global nose isn't called `nosetests`, then you'll want to
-redefine `nose-global-name` to be the command that should be used.
-
 By default, the root of a project is found by looking for any of the files
 `setup.py`, `.hg` and `.git`. You can add files to check for to the file
 list:
