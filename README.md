@@ -12,9 +12,8 @@ What's different ?
 This fork:
 - brings Windows compatibility.
 - calls python with an inline script to launch nose.
-
-I also plan to make it work with test suites (available via
-`easy_install nose-fixes`).
+- can launch test suites (require to install the nose fixes via
+`easy_install nose-fixes`)
 
 Install
 -------
@@ -28,8 +27,8 @@ Usage
 -------
 
 By default, the root of a project is found by looking for any of the files
-`setup.py`, `.hg` and `.git`. You can add files to check for to the file
-list:
+`setup.cfg`, `.hg`, `.git` and `.projectile`. You can add files to check
+for to the file list:
 
     (add-to-list 'nose-project-root-files "something")
 
@@ -42,16 +41,36 @@ If you want dots as output, rather than the verbose output:
 
     (defvar nose-use-verbose nil) ; default is t
 
-Probably also want some keybindings:
+Probably also want some key bindings:
 
     (add-hook 'python-mode-hook
               (lambda ()
                 (local-set-key "\C-ca" 'nosetests-all)
                 (local-set-key "\C-cm" 'nosetests-module)
+                (local-set-key "\C-cs" 'nosetests-suite)
                 (local-set-key "\C-c." 'nosetests-one)
                 (local-set-key "\C-cpa" 'nosetests-pdb-all)
                 (local-set-key "\C-cpm" 'nosetests-pdb-module)
+                (local-set-key "\C-cps" 'nosetests-pdb-suite)
                 (local-set-key "\C-cp." 'nosetests-pdb-one)))
+
+Notes
+------
+
+To be able to launch a test suite, your suite must define a function with
+the name `load_tests`.
+
+For instance (typical example to make `PyDev` *and* `nose.el` happy):
+
+    import unittest
+
+    ALL_TESTS = unittest.TestSuite([my_suites_go_here]) 
+
+    def load_tests(loader=None, tests=None, pattern=None):
+        return ALL_TESTS
+
+    if __name__ == '__main__':
+        unittest.TextTestRunner(verbosity=2).run(ALL_TESTS)
 
 Thanks
 ------

@@ -29,7 +29,7 @@
 ;; python with an inline script to call nose.
 
 ;; By default, the root of a project is found by looking for any of the files
-;; 'setup.py', '.hg' and '.git'. You can add files to check for to the file
+;; '.projectile', 'setup.cfg', '.hg' and '.git'. You can add files to check for to the file
 ;; list:
 ;;
 ;; ; (add-to-list 'nose-project-root-files "something")
@@ -54,11 +54,14 @@
 
 (require 'cl) ;; for "reduce"
 
-(defvar nose-project-root-files '("setup.py" ".hg" ".git"))
+(defvar nose-project-root-files '(".projectile"
+                                  "setup.cfg"
+                                  ".hg"
+                                  ".git"))
 (defvar nose-project-root-test 'nose-project-root)
 (defvar nose-use-verbose t)
 
-(defun run-nose (&optional tests debug failed)
+(defun run-nose (&optional tests suite debug failed)
   "run nosetests by calling python instead of nosetests script.
 To be able to debug on Windows platform python output must be not buffered.
 For more details: http://pswinkels.blogspot.ca/2010/04/debugging-python-code-from-within-emacs.html
@@ -67,7 +70,9 @@ For more details: http://pswinkels.blogspot.ca/2010/04/debugging-python-code-fro
          (where (nose-find-project-root))
          (args (concat (if debug "--pdb" "")
                        " "
-                       (if failed "--failed" "")))
+                       (if failed "--failed" "")
+                       " "
+                       (if suite "--test-suite-func=load_tests" "")))
          (tnames (if tests tests "")))
     (if (not where)
         (error
@@ -89,7 +94,7 @@ For more details: http://pswinkels.blogspot.ca/2010/04/debugging-python-code-fro
 (defun nosetests-all (&optional debug failed)
   "run all tests"
   (interactive)
-  (run-nose nil debug failed))
+  (run-nose nil nil debug failed))
 
 (defun nosetests-failed (&optional debug)
   (interactive)
@@ -102,17 +107,26 @@ For more details: http://pswinkels.blogspot.ca/2010/04/debugging-python-code-fro
 (defun nosetests-module (&optional debug)
   "run nosetests (via eggs/bin/test) on current buffer"
   (interactive)
-  (run-nose buffer-file-name debug))
+  (run-nose buffer-file-name nil debug))
 
 (defun nosetests-pdb-module ()
   (interactive)
   (nosetests-module t))
 
+(defun nosetests-suite (&optional debug)
+  "run nosetests (via eggs/bin/test) on current suite buffer"
+  (interactive)
+  (run-nose buffer-file-name t debug))
+
+(defun nosetests-pdb-suite ()
+  (interactive)
+  (nosetests-suite t))
+
 (defun nosetests-one (&optional debug)
   "run nosetests (via eggs/bin/test) on testable thing
  at point in current buffer"
   (interactive)
-  (run-nose (format "%s:%s" buffer-file-name (nose-py-testable)) debug))
+  (run-nose (format "%s:%s" buffer-file-name (nose-py-testable)) nil debug))
 
 (defun nosetests-pdb-one ()
   (interactive)
