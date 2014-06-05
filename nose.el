@@ -87,7 +87,7 @@ For more details: http://pswinkels.blogspot.ca/2010/04/debugging-python-code-fro
              (format
               (concat "%s "
                       (if nose-use-verbose "-v " "")
-                      "%s -w \"%s\" -c \"%ssetup.cfg\" \"%s\"")
+                      "%s -s -w \"%s\" -c \"%ssetup.cfg\" \"%s\"")
               nose args where where tnames)))
   )
 
