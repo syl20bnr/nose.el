@@ -4,7 +4,7 @@ nose.el
 This gives a bunch of functions that handle running nosetests on a
 particular buffer or part of a buffer.
 
-This is a fork from the the [bitbucket repository][fork].
+This is a fork from the [bitbucket repository][fork].
 
 What's different ?
 ------------------
