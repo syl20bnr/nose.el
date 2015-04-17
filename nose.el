@@ -66,7 +66,7 @@
 To be able to debug on Windows platform python output must be not buffered.
 For more details: http://pswinkels.blogspot.ca/2010/04/debugging-python-code-from-within-emacs.html
 "
-  (let* ((nose "python -u -c \"import nose; nose.run()\"")
+  (let* ((nose (nosetests-nose-command))
          (where (nose-find-project-root))
          (args (concat (if debug "--pdb" "")
                        " "
@@ -90,6 +90,12 @@ For more details: http://pswinkels.blogspot.ca/2010/04/debugging-python-code-fro
                       "%s -s -w \"%s\" -c \"%ssetup.cfg\" \"%s\"")
               nose args where where tnames)))
   )
+
+(defun nosetests-nose-command ()
+  (let ((nose "python -u -c \"import nose; nose.run()\""))
+    (if python-shell-virtualenv-path
+        (format "%s/bin/%s" python-shell-virtualenv-path nose)
+      nose)))
 
 (defun nosetests-all (&optional debug failed)
   "run all tests"
