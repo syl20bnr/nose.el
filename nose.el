@@ -1,14 +1,11 @@
 ;;; nose.el --- Easy Python test running in Emacs
 
 ;; Copyright (C) 2009 Jason Pellerin, Augie Fackler
-;; Copyright (C) 2013 Sylvain Benner
+;; Copyright (C) 2013-2015 Sylvain Benner
 
-;; Licensed under the same terms as Emacs.
-
-;; Version: 20110804.819
-;; X-Original-Version: 0.2
-;; Keywords: nose python testing
 ;; Created: 04 Apr 2009
+;; Version: 0.3
+;; Keywords: nose python testing
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -27,20 +24,24 @@
 ;; This version is compatible with Windows.
 ;; It does not call directly the nosetests script. Instead it calls
 ;; python with an inline script to call nose.
+;; It can launch test suites (require to install the nose fixes via
+;; `easy_install nose-fixes`).
+;; It is also compatible with virtualenv.
 
 ;; By default, the root of a project is found by looking for any of the files
-;; '.projectile', 'setup.cfg', '.hg' and '.git'. You can add files to check for to the file
-;; list:
+;; '.projectile', 'setup.cfg', '.hg' and '.git'. You can add files to check for
+;; to the file list:
 ;;
-;; ; (add-to-list 'nose-project-root-files "something")
+;;   (add-to-list 'nose-project-root-files "something")
 
 ;; or you can change the project root test to detect in some other way
 ;; whether a directory is the project root:
 ;;
-;; ; (setq nose-project-root-test (lambda (dirname) (equal dirname "foo")))
+;;   (setq nose-project-root-test (lambda (dirname) (equal dirname "foo")))
 
 ;; If you want dots as output, rather than the verbose output:
-;; (defvar nose-use-verbose nil) ; default is t
+;;
+;;   (defvar nose-use-verbose nil) ; default is t
 
 ;; Probably also want some keybindings:
 ;; (add-hook 'python-mode-hook
